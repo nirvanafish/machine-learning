@@ -202,7 +202,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># Import libraries necessary for this project</span>
@@ -272,7 +272,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># TODO: Minimum price of the data</span>
@@ -380,7 +380,7 @@ Standard deviation of prices: $165,171.13
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># TODO: Import &#39;r2_score&#39;</span>
@@ -438,7 +438,6 @@ Standard deviation of prices: $165,171.13
 </tbody>
 </table>
 <p><em>Would you consider this model to have successfully captured the variation of the target variable? Why or why not?</em></p>
-<p>It looks like the model captured the variation of the target variable.Because each predicators seems to approximate the true value, thus the distribution of the predicator variables is mostly like the real one.</p>
 <p>Run the code cell below to use the <code>performance_metric</code> function and calculate this model's coefficient of determination.</p>
 
 </div>
@@ -446,7 +445,7 @@ Standard deviation of prices: $165,171.13
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># Calculate the performance of this model</span>
@@ -478,7 +477,8 @@ Standard deviation of prices: $165,171.13
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> 0.923</p>
+<p><strong>Answer:</strong> 0.923<br>
+It looks like the model captured the variation of the target variable.Because each predicators seems to approximate the true value, thus the distribution of the predicator variables approximates the distribuiton of the true value.</p>
 
 </div>
 </div>
@@ -504,7 +504,7 @@ Standard deviation of prices: $165,171.13
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># TODO: Import &#39;train_test_split&#39;</span>
@@ -2272,7 +2272,7 @@ DLBBRD4FNuCUqwLn7tYeIrIXp9eb6G5fAiwsdHOL3dVpqhQrS2SM8UlEslW1TqDjMKaiWY/PGFMS
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># TODO: Import &#39;make_scorer&#39;, &#39;DecisionTreeRegressor&#39;, and &#39;GridSearchCV&#39;</span>
@@ -2285,7 +2285,7 @@ DLBBRD4FNuCUqwLn7tYeIrIXp9eb6G5fAiwsdHOL3dVpqhQrS2SM8UlEslW1TqDjMKaiWY/PGFMS
 <span class="sd">        decision tree regressor trained on the input data [X, y]. &quot;&quot;&quot;</span>
     
     <span class="c"># Create cross-validation sets from the training data</span>
-    <span class="n">cv_sets</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">cv_sets</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">)</span> <span class="c">#random_state = 0</span>
 
     <span class="c"># TODO: Create a decision tree regressor object</span>
     <span class="n">regressor</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">()</span>  <span class="c">#random_state=0</span>
@@ -2297,7 +2297,7 @@ DLBBRD4FNuCUqwLn7tYeIrIXp9eb6G5fAiwsdHOL3dVpqhQrS2SM8UlEslW1TqDjMKaiWY/PGFMS
     <span class="n">scoring_fnc</span> <span class="o">=</span>  <span class="n">make_scorer</span><span class="p">(</span><span class="n">performance_metric</span><span class="p">)</span>
 
     <span class="c"># TODO: Create the grid search object</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">regressor</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">scoring_fnc</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">regressor</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">scoring_fnc</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv_sets</span><span class="p">)</span>  <span class="c"># fixed cv from default 3-fold cross-validation to cv_sets defined before</span>
 
     <span class="c"># Fit the grid search object to the data to compute the optimal model</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -2334,7 +2334,7 @@ DLBBRD4FNuCUqwLn7tYeIrIXp9eb6G5fAiwsdHOL3dVpqhQrS2SM8UlEslW1TqDjMKaiWY/PGFMS
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># Fit the training data to the model using grid search</span>
@@ -2368,7 +2368,7 @@ DLBBRD4FNuCUqwLn7tYeIrIXp9eb6G5fAiwsdHOL3dVpqhQrS2SM8UlEslW1TqDjMKaiWY/PGFMS
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> The optimal model has the optimal max_depth of 4, which is very near my guess of 3 in Question 6. I took different random_state for 10 iterations, the result is mostly 4.</p>
+<p><strong>Answer: </strong> The optimal model has the optimal max_depth of 4, which is very near my guess of 3 in Question 6. I took different random_state for 10 iterations, the result is mostly 4, sometimes 5.</p>
 
 </div>
 </div>
@@ -2521,7 +2521,7 @@ DLBBRD4FNuCUqwLn7tYeIrIXp9eb6G5fAiwsdHOL3dVpqhQrS2SM8UlEslW1TqDjMKaiWY/PGFMS
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># Produce a matrix for client data</span>
@@ -2577,7 +2577,7 @@ Predicted selling price for Client 3&apos;s home: $931,636.36
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">vs</span><span class="o">.</span><span class="n">PredictTrials</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">fit_model</span><span class="p">,</span> <span class="n">client_data</span><span class="p">)</span>
@@ -2593,18 +2593,18 @@ Predicted selling price for Client 3&apos;s home: $931,636.36
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Trial 1: $332,850.00
-Trial 2: $411,417.39
-Trial 3: $346,500.00
+<pre>Trial 1: $324,240.00
+Trial 2: $387,590.00
+Trial 3: $311,430.00
 Trial 4: $324,450.00
 Trial 5: $413,334.78
 Trial 6: $411,931.58
 Trial 7: $344,750.00
-Trial 8: $407,232.00
+Trial 8: $302,400.00
 Trial 9: $306,000.00
 Trial 10: $316,890.00
 
-Range in prices: $107,334.78
+Range in prices: $110,934.78
 </pre>
 </div>
 </div>
