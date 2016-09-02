@@ -13,63 +13,76 @@ class LearningAgent(Agent):
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
         # TODO: Initialize any additional variables here
-        self.epsilon = 0.5
-        self.alpha = 0.3
-        self.discount = 0.9
-        self.Qvalue = OrderedDict()
-        self.state = None
-
+        self.epsilon = 0.8   # probability of randomly select action
+        self.alpha = 0.3  # Q-value learning rate
+        self.discount = 0.9  # discount for future rewards
+        self.Qvalue = OrderedDict()  # initialize Q-value table
+        self.previous_state = None # initialize previous state  
+        self.rounds = 1  # initialize training rounds
 
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
         # TODO: Prepare for a new trip; reset any variables here, if required
-        # self.Qvalue = OrderedDict()        
+        self.rounds += 1 # increase count of training rounds 
+        if self.rounds > 100:
+            self.rounds = 100        
 
     def update(self, t):
         # Gather inputs
         self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
         inputs = self.env.sense(self)
         deadline = self.env.get_deadline(self)
-        #self.epsilon = self.epsilon * deadline/100
-        # TODO: Update state
-        self.state = (inputs['light'], inputs['oncoming'], inputs['left'], inputs['right'], self.next_waypoint)
 
-        for action in self.env.valid_actions:
-            if (self.state, action) not in self.Qvalue.iterkeys():
-                self.Qvalue[(self.state, action)] = 0
+        previous_state = self.env.agent_states[self]
+        previous_location = previous_state['location']
+        previous_heading = previous_state['heading']
+
+        self.epsilon = self.epsilon * (100-self.rounds)/100  # decrease epsilon with increasing training rounds as confidence gains along
+
+        # TODO: Update state with sensor information and guided directions towards destination
+
+        self.previous_state = (inputs['light'], inputs['oncoming'], inputs['left'], inputs['right'], self.next_waypoint)
+
+        for a in self.env.valid_actions:  # initialize Q-value table for unknown combinations of states and actions
+            if (self.previous_state, a) not in self.Qvalue.iterkeys():
+                self.Qvalue[(self.previous_state, a)] = 0
            
-        prob = [self.Qvalue[(self.state, None)] , self.Qvalue[(self.state, 'forward')], self.Qvalue[(self.state, 'left')], self.Qvalue[(self.state, 'right')]]
-        prob = np.exp(prob)/np.sum(np.exp(prob), axis = 0)
-
+        prob = np.array([self.Qvalue[(self.previous_state, None)] , self.Qvalue[(self.previous_state, 'forward')], self.Qvalue[(self.previous_state, 'left')], self.Qvalue[(self.previous_state, 'right')]])
+        #prob = np.exp(prob)/np.sum(np.exp(prob), axis = 0)
+        #print prob
         # TODO: Select action according to your policy
 
         if random.random() < self.epsilon:
-            action = np.random.choice(self.env.valid_actions, p=prob)
+            action = np.random.choice(self.env.valid_actions)#, p=prob)
         else:
-            action = self.env.valid_actions[np.argmax(prob)]
+            action = self.env.valid_actions[np.random.choice(np.where(prob == prob.max())[0])]  # prefer this rather than argmax, which can break the tie preference 
  
 
         # Execute action and get reward
-        oldValue = self.Qvalue[(self.state, action)]
+        oldValue = self.Qvalue[(self.previous_state, action)]
         reward = self.env.act(self, action)
-
+        
         # TODO: Learn policy based on state, action, reward
 
-        #nextInputs = self.env.sense(self)
+        state = self.env.agent_states[self]
+        location = state['location']
+        heading = state['heading']
+
+        nextInputs = self.env.sense(self)
         #print inputs, nextInputs
-        #nextState = (nextInputs['light'], nextInputs['oncoming'], nextInputs['left'], nextInputs['right'], self.planner.next_waypoint())
+        self.state = (nextInputs['light'], nextInputs['oncoming'], nextInputs['left'], nextInputs['right'], self.planner.next_waypoint())
 
-        #for action in self.env.valid_actions:
-        #    if (nextState, action) not in self.Qvalue.iterkeys():
-        #        self.Qvalue[(nextState, action)] = 0
+        for a in self.env.valid_actions: # initialize Q-value table for unknown combinations of current states and actions
+            if (self.state, a) not in self.Qvalue.iterkeys():
+                self.Qvalue[(self.state, a)] = 0
 
-        #futureValue = max([self.Qvalue[(nextState, a)] for a in self.env.valid_actions])
-        newValue = reward #+ self.discount * futureValue 
-        self.Qvalue[(self.state, action)] =  (1-self.alpha) * oldValue + self.alpha * newValue
+        futureValue = max([self.Qvalue[(self.state, a)] for a in self.env.valid_actions])
+        newValue = reward + self.discount * futureValue 
+        self.Qvalue[(self.previous_state, action)] =  (1-self.alpha) * oldValue + self.alpha * newValue  # update Q-value table balanced by learning rate
         
-        print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]A
-        #print self.state, action, self.Qvalue[(self.state, action)], nextState, futureValue
+        #print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]A
+        #print self.previous_state, previous_location, previous_heading, action, self.Qvalue[(self.previous_state, action)], location, heading, self.state, futureValue
 
 
 def run():
@@ -82,7 +95,7 @@ def run():
     # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
 
     # Now simulate it
-    sim = Simulator(e, update_delay=0.01, display=False)  # create simulator (uses pygame when display=True, if available)
+    sim = Simulator(e, update_delay=0.001, display=False)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
     sim.run(n_trials=100)  # run for a specified number of trials

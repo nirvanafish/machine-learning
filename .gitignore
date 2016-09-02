@@ -63,3 +63,4 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+projects/smartcab/smartcab/test.py
